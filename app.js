@@ -1,3 +1,49 @@
+var blocksize_chart = null;
+var register_chart = null;
+var shm_chart = null;
+$(document).ready(function() {
+    $('select').material_select();
+    blocksize_chart = c3.generate({
+        bindto: '#impact_blocksize_plot',
+        data: {
+            xs: {
+                'Threads Per Block': 'x1',
+                'Threads Per Block Current': 'x2',
+            },
+            columns: [],
+        },
+        color: {
+            pattern: ['#77b723', '#e51239']
+        }
+    });
+    register_chart = c3.generate({
+        bindto: '#impact_register_plot',
+        data: {
+            xs: {
+                'Registers Per Thread': 'x1',
+                'Registers Per Thread Current': 'x2',
+            },
+            columns: [],
+        },
+        color: {
+            pattern: ['#77b723', '#e51239']
+        }
+    });
+    shm_chart = c3.generate({
+        bindto: '#impact_shm_plot',
+        data: {
+            xs: {
+                'Shared Memory Per Block': 'x1',
+                'Shared Memory Per Block Current': 'x2',
+            },
+            columns: [],
+        },
+        color: {
+            pattern: ['#77b723', '#e51239']
+        }
+    });
+});
+
 $('form').on('submit', function(e){
     e.preventDefault();
 
@@ -5,6 +51,9 @@ $('form').on('submit', function(e){
     jQuery.map($('form').serializeArray(), function(n, i){
         d[n['name']] = n['value'];
     });
+
+    d['sharedMemoryPerBlock'] = +d['sharedMemoryPerBlock'] * (+d['shm_unit'])
+    
 
     var data = calculate(d);
     var graph = calculateGraphs(d);
@@ -18,31 +67,58 @@ $('form').on('submit', function(e){
 
 
     var gds = _.map(graph, function(v){
+
         var vs = _.values(v.current)
-        var gd = {
-            current: {
-                key: vs[0],
-                value: vs[1]
+        var vss = {
+                x: [+vs[0]],
+                y: [+vs[1]]
             }
-        };
 
-        gd.data = _.map(v.data, function(v){
+
+        x_data = _.map(v.data, function(v){
             var vs = _.values(v);
-            return {
-                key: vs[0],
-                value: vs[1]
-            }
+            return vs[0]
         });
-	gd.xlabel = v.xlabel;
+        y_data = _.map(v.data, function(v){
+            var vs = _.values(v);
+            return vs[1]
+        });
 
-        return gd;
+        return {
+            data: {x: x_data, y: y_data},
+            current: {x: vss.x, y: vss.y}
+        }
+
 
     });
 
-     $o.find('svg').remove();
-     var f = $o.find('figure')
-     drawGraph1(gds[0], f[0]);
-     drawGraph1(gds[1], f[1]);
-     drawGraph1(gds[2], f[2]);
+
+    blocksize_chart.load({
+            columns: [
+                ['x1'].concat(gds[0].data.x),
+                ['x2'].concat(gds[0].current.x),
+                ['Threads Per Block'].concat(gds[0].data.y),
+                ['Threads Per Block Current'].concat(gds[0].current.y)
+            ],
+    });
+
+    register_chart.load({
+        columns: [
+            ['x1'].concat(gds[1].data.x),
+            ['x2'].concat(gds[1].current.x),
+            ['Registers Per Thread'].concat(gds[1].data.y),
+            ['Registers Per Thread Current'].concat(gds[1].current.y)
+        ]
+    });
+
+    shm_chart.load({
+        columns: [
+            ['x1'].concat(gds[2].data.x),
+            ['x2'].concat(gds[2].current.x),
+            ['Shared Memory Per Block'].concat(gds[2].data.y),
+            ['Shared Memory Per Block Current'].concat(gds[2].current.y)
+        ]
+    });
+
 
 })
