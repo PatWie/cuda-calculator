@@ -7,8 +7,7 @@ $(document).ready(function() {
         bindto: '#impact_blocksize_plot',
         data: {
             xs: {
-                'Threads Per Block': 'x1',
-                'Threads Per Block Current': 'x2',
+                'Threads Per Block': 'x1'
             },
             columns: [],
         },
@@ -20,8 +19,7 @@ $(document).ready(function() {
         bindto: '#impact_register_plot',
         data: {
             xs: {
-                'Registers Per Thread': 'x1',
-                'Registers Per Thread Current': 'x2',
+                'Registers Per Thread': 'x1'
             },
             columns: [],
         },
@@ -33,8 +31,7 @@ $(document).ready(function() {
         bindto: '#impact_shm_plot',
         data: {
             xs: {
-                'Shared Memory Per Block': 'x1',
-                'Shared Memory Per Block Current': 'x2',
+                'Shared Memory Per Block': 'x1'
             },
             columns: [],
         },
@@ -53,7 +50,7 @@ $('form').on('submit', function(e){
     });
 
     d['sharedMemoryPerBlock'] = +d['sharedMemoryPerBlock'] * (+d['shm_unit'])
-    
+
 
     var data = calculate(d);
     var graph = calculateGraphs(d);
@@ -96,29 +93,27 @@ $('form').on('submit', function(e){
     blocksize_chart.load({
             columns: [
                 ['x1'].concat(gds[0].data.x),
-                ['x2'].concat(gds[0].current.x),
-                ['Threads Per Block'].concat(gds[0].data.y),
-                ['Threads Per Block Current'].concat(gds[0].current.y)
+                ['Threads Per Block'].concat(gds[0].data.y)
             ],
     });
+    blocksize_chart.xgrids([{value: gds[0].current.x, text: 'current', position: 'middle'}])
+
 
     register_chart.load({
         columns: [
             ['x1'].concat(gds[1].data.x),
-            ['x2'].concat(gds[1].current.x),
-            ['Registers Per Thread'].concat(gds[1].data.y),
-            ['Registers Per Thread Current'].concat(gds[1].current.y)
+            ['Registers Per Thread'].concat(gds[1].data.y)
         ]
     });
+    register_chart.xgrids([{value: gds[1].current.x, text: 'current', position: 'middle'}])
 
     shm_chart.load({
         columns: [
             ['x1'].concat(gds[2].data.x),
-            ['x2'].concat(gds[2].current.x),
-            ['Shared Memory Per Block'].concat(gds[2].data.y),
-            ['Shared Memory Per Block Current'].concat(gds[2].current.y)
+            ['Shared Memory Per Block'].concat(gds[2].data.y)
         ]
     });
+    shm_chart.xgrids([{value: gds[2].current.x, text: 'current', position: 'middle'}])
 
 
 })

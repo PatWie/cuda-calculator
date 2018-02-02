@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <select name="version">
-                                <option value="1.0" selected="selected">1.0</option>
+                                <option value="1.0">1.0</option>
                                 <option value="1.1">1.1</option>
                                 <option value="1.2">1.2</option>
                                 <option value="1.3">1.3</option>
@@ -35,7 +35,7 @@
                                 <option value="5.0">5.0</option>
                                 <option value="5.2">5.2</option>
                                 <option value="5.3">5.3</option>
-                                <option value="6.0">6.0</option>
+                                <option value="6.0" selected="selected">6.0</option>
                                 <option value="6.1">6.1</option>
                                 <option value="6.2">6.2</option>
                                 <option value="7.0">7.0</option>
@@ -43,21 +43,21 @@
                             <label for="version">Compute Capability version</label>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="input-field col s6">
-                            <input placeholder="256 Threads" id="threadsPerBlock" name="threadsPerBlock" type="text" class="validate" value="256">
+                            <input placeholder="128 Threads" id="threadsPerBlock" name="threadsPerBlock" type="text" class="validate" value="128">
                             <label for="threadsPerBlock">Threads per block</label>
                         </div>
                         <div class="input-field col s6">
-                            <input placeholder="8 registers" id="registersPerThread" name="registersPerThread" type="text" class="validate" value="8">
+                            <input placeholder="48 registers" id="registersPerThread" name="registersPerThread" type="text" class="validate" value="48">
                             <label for="registersPerThread">Registers per thread
                             </label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <input placeholder="size of shared memory" id="sharedMemoryPerBlock" name="sharedMemoryPerBlock" type="text" class="validate" value="1024">
+                            <input placeholder="size of shared memory" id="sharedMemoryPerBlock" name="sharedMemoryPerBlock" type="text" class="validate" value="4096">
                             <label for="sharedMemoryPerBlock">Shared memory per block</label>
                         </div>
                         <div class="input-field col s6">
@@ -96,26 +96,22 @@
                 </table>
                 <div class="row">
                     <table class=" small">
-                        <caption>Physical Limits for GPU Compute Capability</caption>
-                        <tr>
-                            <th>Version</th>
-                            <td data-value="version"></td>
-                        </tr>
+                        <caption>Physical Limits for GPU Compute Capability: <span data-value="version"></span></caption>
                         <tr>
                             <th>Threads per Warp</th>
                             <td data-value="threadsPerWarp"></td>
                         </tr>
                         <tr>
-                            <th>Warps per Multiprocessor</th>
+                            <th>Max Warps per Multiprocessor</th>
                             <td data-value="warpsPerMultiprocessor"></td>
+                        </tr>
+                        <tr>
+                            <th>Max Thread Blocks per Multiprocessor</th>
+                            <td data-value="threadBlocksPerMultiprocessor"></td>
                         </tr>
                         <tr>
                             <th>Threads per Multiprocessor</th>
                             <td data-value="threadsPerMultiprocessor"></td>
-                        </tr>
-                        <tr>
-                            <th>Thread Blocks per Multiprocessor</th>
-                            <td data-value="threadBlocksPerMultiprocessor"></td>
                         </tr>
                         <tr>
                             <th>Total # of 32-bit registers per Multiprocessor</th>
@@ -143,7 +139,7 @@
                         </tr>
                     </table>
                 </div>
-                
+
                 <table class="centered">
                     <caption>Allocation Per Thread Block</caption>
                     <thead>
@@ -176,12 +172,12 @@
                         <div id="test"></div>
                     </div>
                 </div>
-                
-                
+
+
             </div>
         </div>
-        
-        
+
+
         <!-- Compiled and minified JavaScript -->
         <script src="https://code.jquery.com/jquery-latest.js"></script>
         <script src="js/materialize.min.js"></script>
